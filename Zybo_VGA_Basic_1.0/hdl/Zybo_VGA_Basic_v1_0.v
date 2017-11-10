@@ -16,7 +16,11 @@
 	(
 		// Users to add ports here
 		input   wire        pixel_clk,    
-        output  wire [14:0] VGA,
+        output  wire [4:0]  VGA_R,
+        output  wire [4:0]  VGA_B,
+        output  wire [5:0]  VGA_G,
+        output  wire        VGA_HS,
+        output  wire        VGA_VS,
 		// User ports ends
 		// Do not modify the ports beyond this line
 
@@ -44,11 +48,28 @@
 		output wire  s_axi_rvalid,
 		input wire  s_axi_rready
 	);
+	
+// Instantiation of User-Defined Wires
+wire [31:0] H_Sync_w, H_BP_w, H_FP_w, H_Range_w, H_LR_Border_w, V_Sync_w, V_BP_w, V_FP_w, V_Range_w, V_TB_Border_w;
+wire [15:0] InImage_Color_w, OutImage_Color_w;
+
 // Instantiation of Axi Bus Interface S_AXI
 	Zybo_VGA_Basic_v1_0_S_AXI # ( 
 		.C_S_AXI_DATA_WIDTH(C_S_AXI_DATA_WIDTH),
 		.C_S_AXI_ADDR_WIDTH(C_S_AXI_ADDR_WIDTH)
 	) Zybo_VGA_Basic_v1_0_S_AXI_inst (
+	    .H_Sync(H_Sync_w),        
+        .H_BP(H_BP_w),         
+        .H_FP(H_FP_w),
+        .H_Range(H_Range_w),   
+        .H_LR_Border(H_LR_Border_w), 
+        .V_Sync(V_Sync_w),
+        .V_BP(V_BP_w),      
+        .V_FP(V_FP_w),  
+        .V_Range(V_Range_w),   
+        .V_TB_Border(V_TB_Border_w),
+        .InImage_Color(InImage_Color_w),
+        .OutImage_Color(OutImage_Color_w),
 		.S_AXI_ACLK(s_axi_aclk),
 		.S_AXI_ARESETN(s_axi_aresetn),
 		.S_AXI_AWADDR(s_axi_awaddr),
@@ -71,6 +92,28 @@
 		.S_AXI_RVALID(s_axi_rvalid),
 		.S_AXI_RREADY(s_axi_rready)
 	);
+
+//Instantiation of User-Defined Modules
+VGA_Control(
+    .H_Sync(H_Sync_w),
+    .H_BP(H_BP_w),
+    .H_FP(H_FP_w),
+    .H_Range(H_Range_w),
+    .H_LR_Border(H_LR_Border_w),
+    .V_Sync(V_Sync_w),
+    .V_BP(V_BP_w),
+    .V_FP(V_FP_w),
+    .V_Range(V_Range_w),
+    .V_TB_Border(V_TB_Border_w),
+    .InImage_Color(InImage_Color_w),
+    .OutImage_Color(OutImage_Color_w),
+    .pixel_clk(pixel_clk),
+    .VGA_R(VGA_R),
+    .VGA_B(VGA_B),
+    .VGA_G(VGA_G),
+    .VGA_HS(VGA_HS),
+    .VGA_VS(VGA_VS)
+);
 
 	// Add user logic here
 

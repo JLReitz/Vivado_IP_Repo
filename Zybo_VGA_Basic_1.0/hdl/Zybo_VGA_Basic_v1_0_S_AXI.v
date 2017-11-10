@@ -15,7 +15,18 @@
 	)
 	(
 		// Users to add ports here
-
+        output  wire [31:0] H_Sync,
+        output  wire [31:0] H_BP,
+        output  wire [31:0] H_FP,
+        output  wire [31:0] H_Range,
+        output  wire [31:0] H_LR_Border,
+        output  wire [31:0] V_Sync,
+        output  wire [31:0] V_BP,
+        output  wire [31:0] V_FP,
+        output  wire [31:0] V_Range,
+        output  wire [31:0] V_TB_Border,
+        output  wire [15:0] InImage_Color,
+        output  wire [15:0] OutImage_Color,
 		// User ports ends
 		// Do not modify the ports beyond this line
 
@@ -486,7 +497,18 @@
 	end    
 
 	// Add user logic here
-
+    assign H_Sync = slv_reg0;
+    assign H_BP = slv_reg1;
+    assign H_FP = slv_reg2;
+    assign H_Range = slv_reg3;
+    assign H_LR_Border = slv_reg4;
+    assign V_Sync = slv_reg5;
+    assign V_BP = slv_reg6;
+    assign V_FP = slv_reg7;
+    assign V_Range = slv_reg8;
+    assign V_TB_Border = slv_reg9;
+    assign InImage_Color = slv_reg10[15:0];
+    assign OutImage_Color = slv_reg11[15:0];
 	// User logic ends
 
 	endmodule
