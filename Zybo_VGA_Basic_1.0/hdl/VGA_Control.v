@@ -41,14 +41,17 @@ module VGA_Control(
         output  reg        VGA_VS
     );
     
-    wire    H_Start, H_End, V_Start, V_End;
-    reg    H_InRange, V_InRange;
-    integer H_Counter, V_Counter;
+    wire        H_Start, H_End, V_Start, V_End;
+    wire [31:0] H_Length, V_Length;
+    reg         H_InRange, V_InRange;
+    integer     H_Counter, V_Counter;
     
-    assign H_Start = H_Sync+H_BP+H_LR_Border;
+    assign H_Start = H_Sync+H_BP+H_LR_Border - 1;
     assign H_End = H_Start + H_Range;
-    assign V_Start = V_Sync+V_BP+V_TB_Border;
+    assign V_Start = V_Sync+V_BP+V_TB_Border - 1;
     assign V_End = V_Start + V_Range;
+    assign H_Length = H_Sync + H_BP + H_FP + H_Range + H_LR_Border - 1;
+    assign V_Length = V_Sync + V_BP + V_FP + V_Range + V_TB_Border - 1;
     
     initial
     begin
@@ -61,11 +64,11 @@ module VGA_Control(
     always @ (posedge(pixel_clk))
     begin
         //Increment the horizontal and vertical counters
-        if(H_Counter >= (H_Sync+H_BP+H_FP+H_Range+H_LR_Border-1))
+        if(H_Counter >= H_Length)
         begin
             H_Counter <= 32'd0;
             
-            if(V_Counter >= (V_Sync+V_BP+V_FP+V_Range+V_TB_Border-1))
+            if(V_Counter >= V_Length)
             begin
                 V_Counter <= 32'd0;
             end
@@ -75,13 +78,24 @@ module VGA_Control(
         else
             H_Counter = H_Counter + 32'd1;
             
+        //Enable H-Sync and V-Sync if necessary
+        if((H_Counter >= 0) && (H_Counter < H_Sync))
+            VGA_HS <= 1'd0;
+        else
+            VGA_HS <= 1'd1;
+            
+        if((V_Counter >= 0) && (V_Counter < V_Sync))
+            VGA_VS <= 1'd0;
+        else
+            VGA_VS <= 1'd1;
+            
         //Enable the image if within the image range
-        if((H_Counter >= (H_Start-1)) && (H_Counter <= (H_End-1)))
+        if((H_Counter >= H_Start) && (H_Counter <= H_End))
             H_InRange <= 1'd1;
         else
             H_InRange <= 1'd0;
             
-        if((V_Counter >= (V_Start-1)) && (V_Counter <= (V_End-1)))
+        if((V_Counter >= V_Start) && (V_Counter <= V_End))
             V_InRange <= 1'd1;
         else
             V_InRange <= 1'd0;
@@ -89,8 +103,8 @@ module VGA_Control(
         //Display image if in range
         if(H_InRange && V_InRange)
         begin
-            if((H_Counter >= (H_Start+49)) && (H_Counter <= (H_End-51)) &&
-                (V_Counter >= (V_Start+49)) && (V_Counter <= (V_End-51)))
+            if((H_Counter >= (H_Start+50)) && (H_Counter <= (H_End-50)) &&
+                (V_Counter >= (V_Start+50)) && (V_Counter <= (V_End-50)))
             begin
                 VGA_R <= InImage_Color[4:0];
                 VGA_B <= InImage_Color[9:5];

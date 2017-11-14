@@ -94,7 +94,7 @@ wire [15:0] InImage_Color_w, OutImage_Color_w;
 	);
 
 //Instantiation of User-Defined Modules
-VGA_Control(
+VGA_Control controller(
     .H_Sync(H_Sync_w),
     .H_BP(H_BP_w),
     .H_FP(H_FP_w),

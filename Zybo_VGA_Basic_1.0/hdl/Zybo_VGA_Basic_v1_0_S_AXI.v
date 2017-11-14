@@ -115,18 +115,18 @@
 	//-- Signals for user logic register space example
 	//------------------------------------------------
 	//-- Number of Slave Registers 12
-	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg0;
-	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg1;
-	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg2;
-	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg3;
-	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg4;
-	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg5;
-	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg6;
-	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg7;
-	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg8;
-	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg9;
-	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg10;
-	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg11;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg0 = 96;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg1 = 48;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg2 = 16;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg3 = 640;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg4 = 0;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg5 = 2;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg6 = 33;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg7 = 10;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg8 = 480;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg9 = 0;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg10 = 0;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg11 = 0;
 	wire	 slv_reg_rden;
 	wire	 slv_reg_wren;
 	reg [C_S_AXI_DATA_WIDTH-1:0]	 reg_data_out;
