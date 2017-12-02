@@ -155,7 +155,7 @@ module VGA_Controller(
             ((V_Counter >= Char_YLoc) && (V_Counter <= (Char_YLoc+15))))
         begin
             Address[10:4] <= Character;
-            Address[3:0] <= V_Counter - Char_YLoc;
+            Address[3:0] <= 4'd15 - (V_Counter - Char_YLoc);
             Shift_Rst <= 1'd0;
         end    
         else
@@ -169,9 +169,9 @@ module VGA_Controller(
     always @ (posedge(pixel_clk))
     begin
         if(Shift_Rst)
-            Shift_Counter <= 32'd0;
+            Shift_Counter <= 32'd15;
         else
-            Shift_Counter <= Shift_Counter + 32'd1;
+            Shift_Counter <= Shift_Counter - 32'd1;
     end
     
     // Logic
